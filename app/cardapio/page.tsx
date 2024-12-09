@@ -43,10 +43,10 @@ export default function Cardapio() {
     if (indiceExistente > -1) {
       carrinhoAtualizado[indiceExistente].quantidade += boloNoCarrinho.quantidade
     } else {
-      carrinhоAtualizado.push(boloNoCarrinho)
+        carrinhoAtualizado.push(boloNoCarrinho)
     }
 
-    setCarrinho(carrinhоAtualizado)
+    setCarrinho(carrinhoAtualizado)
   }
 
   const valorTotal = carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0)
