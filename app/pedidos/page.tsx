@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
@@ -15,7 +15,6 @@ interface BoloCarrinho {
 }
 
 function PedidosContent() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const [carrinho, setCarrinho] = useState<BoloCarrinho[]>(() => {
     const carrinhoParam = searchParams.get('carrinho')
