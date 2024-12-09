@@ -1,0 +1,83 @@
+[
+    {
+      "id": 1,
+      "nome": "Cupuaçu",
+      "descricao": "Bolo de pote com recheio cremoso de cupuaçu",
+      "preco": 15.00,
+      "tamanhos": ["200ml", "300ml"],
+      "imagem": "/img/bolos/chocolate.jpeg"
+    },
+    {
+      "id": 2,
+      "nome": "Cupuaçu com Castanha do Pará",
+      "descricao": "Bolo de pote com cupuaçu e castanhas do Pará crocantes",
+      "preco": 15.00,
+      "tamanhos": ["200ml", "300ml"],
+      "imagem": "/img/bolos/chocolate.jpeg"
+    },
+    {
+      "id": 3,
+      "nome": "Cupulate",
+      "descricao": "Bolo de chocolate feito com cupulate, alternativa ao chocolate",
+      "preco": 15.00,
+      "tamanhos": ["200ml", "300ml"],
+      "imagem": "/img/bolos/chocolate.jpeg"
+    },
+    {
+      "id": 4,
+      "nome": "Ninho com Nutella",
+      "descricao": "Bolo de leite ninho com camadas generosas de Nutella",
+      "preco": 15.00,
+      "tamanhos": ["200ml", "300ml"],
+      "imagem": "/img/bolos/chocolate.jpeg"
+    },
+    {
+      "id": 5,
+      "nome": "Prestígio",
+      "descricao": "Bolo de chocolate com recheio de coco cremoso",
+      "preco": 15.00,
+      "tamanhos": ["200ml", "300ml"],
+      "imagem": "/img/bolos/chocolate.jpeg"
+    },
+    {
+      "id": 6,
+      "nome": "Cocada Cremosa",
+      "descricao": "Bolo de pote com cocada cremosa e doce na medida certa",
+      "preco": 15.00,
+      "tamanhos": ["200ml", "300ml"],
+      "imagem": "/img/bolos/chocolate.jpeg"
+    },
+    {
+      "id": 7,
+      "nome": "Bacuri",
+      "descricao": "Bolo de pote com recheio de bacuri, sabor típico da Amazônia",
+      "preco": 15.00,
+      "tamanhos": ["200ml", "300ml"],
+      "imagem": "/img/bolos/chocolate.jpeg"
+    },
+    {
+      "id": 8,
+      "nome": "Ninho com Oreo",
+      "descricao": "Bolo de leite ninho com pedaços crocantes de Oreo",
+      "preco": 15.00,
+      "tamanhos": ["200ml", "300ml"],
+      "imagem": "/img/bolos/chocolate.jpeg"
+    },
+    {
+      "id": 9,
+      "nome": "Brigadeiro",
+      "descricao": "Bolo de chocolate com recheio de brigadeiro cremoso",
+      "preco": 15.00,
+      "tamanhos": ["200ml", "300ml"],
+      "imagem": "/img/bolos/chocolate.jpeg"
+    },
+    {
+      "id": 10,
+      "nome": "Ninho com Geleia de Morango",
+      "descricao": "Bolo de leite ninho com geleia de morango artesanal",
+      "preco": 15.00,
+      "tamanhos": ["200ml", "300ml"],
+      "imagem": "/img/bolos/chocolate.jpeg"
+    }
+  ]
+  
