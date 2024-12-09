@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { Suspense } from 'react'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 
 interface BoloCarrinho {
   id: number
@@ -13,6 +15,7 @@ interface BoloCarrinho {
 }
 
 function PedidosContent() {
+  const router = useRouter()
   const searchParams = useSearchParams()
   const [carrinho, setCarrinho] = useState<BoloCarrinho[]>(() => {
     const carrinhoParam = searchParams.get('carrinho')
@@ -55,7 +58,17 @@ function PedidosContent() {
 
   return (
     <div className="container mx-auto px-4 py-8" style={{ backgroundColor: '#ffcbdb' }}>
-      <h1 className="text-3xl font-bold mb-8 text-center text-black">Finalizar Pedido</h1>
+      <div className="flex items-center justify-between mb-8">
+        <Link 
+          href="/cardapio" 
+          className="flex items-center text-pink-700 hover:text-pink-900"
+        >
+          <ArrowLeft className="mr-2" /> Voltar ao Cardápio
+        </Link>
+        <h1 className="text-3xl font-bold text-center text-black">Finalizar Pedido</h1>
+        <div className="w-8"></div> {/* Placeholder to center the title */}
+      </div>
+      
       <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-6 rounded-lg">
         {carrinho.length > 0 && (
           <div className="mb-4">
