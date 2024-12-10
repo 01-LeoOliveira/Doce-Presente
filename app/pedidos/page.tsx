@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { FaWhatsapp } from 'react-icons/fa';
 
 interface BoloCarrinho {
   id: number
@@ -36,14 +37,44 @@ function PedidosContent() {
     observacoes: ''
   })
 
+  const [metodoPagamento, setMetodoPagamento] = useState('pix')
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const pedidoCompleto = {
       bolos: carrinho,
-      cliente: dadosCliente
+      cliente: dadosCliente,
+      pagamento: metodoPagamento
     }
-    console.log('Pedido Completo:', pedidoCompleto)
-    alert('Pedido enviado com sucesso!')
+
+    // Preparar mensagem para WhatsApp
+    const mensagemWhatsApp = gerarMensagemWhatsApp(pedidoCompleto)
+    const telefoneEmpresa = '+55919982690087' // Substitua pelo número real
+    const linkWhatsApp = `https://wa.me/${telefoneEmpresa}?text=${encodeURIComponent(mensagemWhatsApp)}`
+
+    window.open(linkWhatsApp, '_blank')
+  }
+
+  const gerarMensagemWhatsApp = (pedido: any) => {
+    let mensagem = `*Novo Pedido - Doce Presente*\n\n`
+    mensagem += `*Nome:* ${pedido.cliente.nome}\n`
+    mensagem += `*Telefone:* ${pedido.cliente.telefone}\n\n`
+
+    mensagem += `*Itens do Pedido:*\n`
+    pedido.bolos.forEach((bolo: BoloCarrinho) => {
+      mensagem += `- ${bolo.nome} (${bolo.tamanho}) x${bolo.quantidade}: R$ ${(bolo.preco * bolo.quantidade).toFixed(2)}\n`
+    })
+
+    mensagem += `\n*Valor Total:* R$ ${pedido.bolos.reduce((total: number, item: BoloCarrinho) =>
+      total + item.preco * item.quantidade, 0).toFixed(2)}\n\n`
+
+    mensagem += `*Método de Pagamento:* ${metodoPagamento.toUpperCase()}\n`
+
+    if (pedido.cliente.observacoes) {
+      mensagem += `*Observações:* ${pedido.cliente.observacoes}\n`
+    }
+
+    return mensagem
   }
 
   const valorTotal = carrinho.reduce((total, item) =>
@@ -56,28 +87,37 @@ function PedidosContent() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8" style={{ backgroundColor: '#ffcbdb' }}>
-      <div className="flex items-center justify-between mb-8">
-        <Link 
-          href="/cardapio" 
-          className="flex items-center text-pink-700 hover:text-pink-900"
+    <div
+      className="container mx-auto px-4 py-8 min-h-screen flex flex-col"
+      style={{ backgroundColor: '#ffcbdb' }}
+    >
+      {/* Cabeçalho responsivo */}
+      <div className="relative flex items-center justify-center mb-8">
+        <Link
+          href="/cardapio"
+          className="absolute left-0 flex items-center text-pink-700 hover:text-pink-900"
         >
           <ArrowLeft className="mr-2" /> Voltar ao Cardápio
         </Link>
-        <h1 className="text-3xl font-bold text-center text-black">Finalizar Pedido</h1>
-        <div className="w-8"></div> {/* Placeholder to center the title */}
+        <h1 className="text-2xl sm:text-3xl font-bold text-center text-black">
+          Finalizar Pedido
+        </h1>
       </div>
-      
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-6 rounded-lg">
+
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md mx-auto bg-white p-4 sm:p-6 rounded-lg shadow-md flex-grow"
+      >
+        {/* Lista de bolos no pedido */}
         {carrinho.length > 0 && (
-          <div className="mb-4">
+          <div className="mb-4 overflow-x-auto">
             <h2 className="text-black font-bold mb-2">Bolos no Pedido:</h2>
             {carrinho.map((bolo, index) => (
               <div
                 key={index}
-                className="flex justify-between items-center bg-pink-50 p-2 rounded mb-2"
+                className="flex flex-col sm:flex-row justify-between items-center bg-pink-50 p-2 rounded mb-2"
               >
-                <span className="text-black">
+                <span className="text-black text-center sm:text-left mb-2 sm:mb-0">
                   {bolo.nome} - {bolo.tamanho}
                   (x{bolo.quantidade})
                   R$ {(bolo.preco * bolo.quantidade).toFixed(2)}
@@ -85,7 +125,7 @@ function PedidosContent() {
                 <button
                   type="button"
                   onClick={() => removerBolo(index)}
-                  className="text-red-500 hover:text-red-700"
+                  className="text-red-500 hover:text-red-700 w-full sm:w-auto"
                 >
                   Remover
                 </button>
@@ -97,42 +137,63 @@ function PedidosContent() {
           </div>
         )}
 
-        <div className="mb-4">
-          <label className="block mb-2 text-black">Nome Completo</label>
-          <input
-            type="text"
-            value={dadosCliente.nome}
-            onChange={(e) => setDadosCliente({ ...dadosCliente, nome: e.target.value })}
-            className="w-full border rounded p-2 text-black bg-white"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2 text-black">Telefone</label>
-          <input
-            type="tel"
-            value={dadosCliente.telefone}
-            onChange={(e) => setDadosCliente({ ...dadosCliente, telefone: e.target.value })}
-            className="w-full border rounded p-2 text-black bg-white"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2 text-black">Observações</label>
-          <textarea
-            value={dadosCliente.observacoes}
-            onChange={(e) => setDadosCliente({ ...dadosCliente, observacoes: e.target.value })}
-            className="w-full border rounded p-2 text-black bg-white"
-            rows={4}
-          />
+        {/* Campos de formulário com espaçamento e responsividade */}
+        <div className="space-y-4">
+          <div>
+            <label className="block mb-2 text-black">Nome Completo</label>
+            <input
+              type="text"
+              value={dadosCliente.nome}
+              onChange={(e) => setDadosCliente({ ...dadosCliente, nome: e.target.value })}
+              className="w-full border rounded p-2 text-black bg-white focus:ring-2 focus:ring-pink-300"
+              required
+              placeholder="Digite seu nome"
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-black">Telefone</label>
+            <input
+              type="tel"
+              value={dadosCliente.telefone}
+              onChange={(e) => setDadosCliente({ ...dadosCliente, telefone: e.target.value })}
+              className="w-full border rounded p-2 text-black bg-white focus:ring-2 focus:ring-pink-300"
+              required
+              placeholder="(00) 00000-0000"
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-black">Método de Pagamento</label>
+            <select
+              value={metodoPagamento}
+              onChange={(e) => setMetodoPagamento(e.target.value)}
+              className="w-full border rounded p-2 text-black bg-white focus:ring-2 focus:ring-pink-300"
+            >
+              <option value="pix">PIX</option>
+              <option value="dinheiro">Dinheiro</option>
+              <option value="cartao">Cartão</option>
+            </select>
+          </div>
+          <div>
+            <label className="block mb-2 text-black">Observações</label>
+            <textarea
+              value={dadosCliente.observacoes}
+              onChange={(e) => setDadosCliente({ ...dadosCliente, observacoes: e.target.value })}
+              className="w-full border rounded p-2 text-black bg-white focus:ring-2 focus:ring-pink-300"
+              rows={4}
+              placeholder="Alguma observação especial?"
+            />
+          </div>
         </div>
 
+        {/* Botão de envio com feedback de toque */}
         <button
           type="submit"
           disabled={carrinho.length === 0}
-          className="w-full bg-pink-500 text-white py-3 rounded hover:bg-pink-600 disabled:opacity-50"
+          className="mt-4 w-full bg-pink-500 text-white py-3 rounded hover:bg-pink-600 
+                     disabled:opacity-50 flex items-center justify-center 
+                     active:scale-95 transition-transform"
         >
-          Finalizar Pedido
+          <FaWhatsapp className="mr-2" /> Enviar Pedido pelo WhatsApp
         </button>
       </form>
     </div>
@@ -141,7 +202,7 @@ function PedidosContent() {
 
 export default function Pedidos() {
   return (
-    <Suspense fallback={<div>Carregando...</div>}>
+    <Suspense fallback={<div className="container mx-auto px-4 py-8">Carregando...</div>}>
       <PedidosContent />
     </Suspense>
   )
