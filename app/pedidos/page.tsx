@@ -61,7 +61,7 @@ function PedidosContent() {
 
     // Preparar mensagem para WhatsApp
     const mensagemWhatsApp = gerarMensagemWhatsApp(pedidoCompleto)
-    const telefoneEmpresa = '+55919982690087' // Substitua pelo número real
+    const telefoneEmpresa = '+5591982690087' // Substitua pelo número real
     const linkWhatsApp = `https://wa.me/${telefoneEmpresa}?text=${encodeURIComponent(mensagemWhatsApp)}`
     
     window.open(linkWhatsApp, '_blank')
