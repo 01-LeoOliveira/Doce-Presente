@@ -7,12 +7,24 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { FaWhatsapp } from 'react-icons/fa';
 
+// Interface para os itens do carrinho
 interface BoloCarrinho {
   id: number
   nome: string
   preco: number
   quantidade: number
   tamanho: string
+}
+
+// Interface para o pedido completo
+interface PedidoCompleto {
+  bolos: BoloCarrinho[];
+  cliente: {
+    nome: string;
+    telefone: string;
+    observacoes?: string;
+  };
+  pagamento: string;
 }
 
 function PedidosContent() {
@@ -41,7 +53,7 @@ function PedidosContent() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const pedidoCompleto = {
+    const pedidoCompleto: PedidoCompleto = {
       bolos: carrinho,
       cliente: dadosCliente,
       pagamento: metodoPagamento
@@ -51,25 +63,25 @@ function PedidosContent() {
     const mensagemWhatsApp = gerarMensagemWhatsApp(pedidoCompleto)
     const telefoneEmpresa = '+55919982690087' // Substitua pelo número real
     const linkWhatsApp = `https://wa.me/${telefoneEmpresa}?text=${encodeURIComponent(mensagemWhatsApp)}`
-
+    
     window.open(linkWhatsApp, '_blank')
   }
 
-  const gerarMensagemWhatsApp = (pedido: any) => {
+  const gerarMensagemWhatsApp = (pedido: PedidoCompleto) => {
     let mensagem = `*Novo Pedido - Doce Presente*\n\n`
     mensagem += `*Nome:* ${pedido.cliente.nome}\n`
     mensagem += `*Telefone:* ${pedido.cliente.telefone}\n\n`
-
+    
     mensagem += `*Itens do Pedido:*\n`
-    pedido.bolos.forEach((bolo: BoloCarrinho) => {
+    pedido.bolos.forEach((bolo) => {
       mensagem += `- ${bolo.nome} (${bolo.tamanho}) x${bolo.quantidade}: R$ ${(bolo.preco * bolo.quantidade).toFixed(2)}\n`
     })
-
-    mensagem += `\n*Valor Total:* R$ ${pedido.bolos.reduce((total: number, item: BoloCarrinho) =>
+    
+    mensagem += `\n*Valor Total:* R$ ${pedido.bolos.reduce((total, item) => 
       total + item.preco * item.quantidade, 0).toFixed(2)}\n\n`
-
-    mensagem += `*Método de Pagamento:* ${metodoPagamento.toUpperCase()}\n`
-
+    
+    mensagem += `*Método de Pagamento:* ${pedido.pagamento.toUpperCase()}\n`
+    
     if (pedido.cliente.observacoes) {
       mensagem += `*Observações:* ${pedido.cliente.observacoes}\n`
     }
@@ -87,14 +99,14 @@ function PedidosContent() {
   }
 
   return (
-    <div
-      className="container mx-auto px-4 py-8 min-h-screen flex flex-col"
+    <div 
+      className="container mx-auto px-4 py-8 min-h-screen flex flex-col" 
       style={{ backgroundColor: '#ffcbdb' }}
     >
-      {/* Cabeçalho responsivo */}
+      {/* Cabeçalho responsivo com título centralizado */}
       <div className="relative flex items-center justify-center mb-8">
-        <Link
-          href="/cardapio"
+        <Link 
+          href="/cardapio" 
           className="absolute left-0 flex items-center text-pink-700 hover:text-pink-900"
         >
           <ArrowLeft className="mr-2" /> Voltar ao Cardápio
@@ -103,9 +115,9 @@ function PedidosContent() {
           Finalizar Pedido
         </h1>
       </div>
-
-      <form
-        onSubmit={handleSubmit}
+      
+      <form 
+        onSubmit={handleSubmit} 
         className="w-full max-w-md mx-auto bg-white p-4 sm:p-6 rounded-lg shadow-md flex-grow"
       >
         {/* Lista de bolos no pedido */}
