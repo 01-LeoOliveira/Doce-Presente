@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import bolos from '../../data/bolos.json'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ShoppingCart } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
 
 interface BoloCarrinho {
   id: number
@@ -15,7 +15,7 @@ interface BoloCarrinho {
   tamanho: string
 }
 
-export default function Cardapio() {
+function CardapioContent() {
   const searchParams = useSearchParams()
   const [carrinho, setCarrinho] = useState<BoloCarrinho[]>(() => {
     const carrinhoParam = searchParams.get('carrinho')
@@ -40,7 +40,7 @@ export default function Cardapio() {
   }
 
   const adicionarAoCarrinho = (bolo: typeof bolos[0]) => {
-    const detalhes = bolosQuantidade[bolo.id] || { quantidade: 1, tamanho: '200ml' }
+    const detalhes = bolosQuantidade[bolo.id] || { quantidade: 1, tamanho: '400ml' }
     const boloNoCarrinho: BoloCarrinho = {
       id: bolo.id,
       nome: bolo.nome,
@@ -109,7 +109,7 @@ export default function Cardapio() {
                     R$ {bolo.preco.toFixed(2)}
                   </span>
                   <select 
-                    value={(bolosQuantidade[bolo.id]?.tamanho) || '200ml'}
+                    value={(bolosQuantidade[bolo.id]?.tamanho) || '400ml'}
                     onChange={(e) => {
                       const tamanhoSelecionado = e.target.value
                       atualizarQuantidade(bolo.id, 
@@ -137,7 +137,7 @@ export default function Cardapio() {
                       atualizarQuantidade(
                         bolo.id, 
                         quantidade, 
-                        bolosQuantidade[bolo.id]?.tamanho || '200ml'
+                        bolosQuantidade[bolo.id]?.tamanho || '400ml'
                       )
                     }}
                     className="w-full sm:w-16 border rounded px-2 py-1 text-center text-sm"
@@ -155,5 +155,13 @@ export default function Cardapio() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function Cardapio() {
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-8">Carregando...</div>}>
+      <CardapioContent />
+    </Suspense>
   )
 }
