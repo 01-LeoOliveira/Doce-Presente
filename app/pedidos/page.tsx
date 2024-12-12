@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Home } from 'lucide-react'
 import { FaWhatsapp } from 'react-icons/fa';
 
 // Interface para os itens do carrinho
@@ -104,17 +104,24 @@ function PedidosContent() {
       style={{ backgroundColor: '#ffcbdb' }}
     >
       {/* Cabeçalho responsivo com título centralizado */}
-      <div className="relative flex items-center justify-center mb-8">
+      <div className="relative flex items-center justify-between mb-8">
         <Link 
           href="/cardapio" 
-          className="absolute left-0 flex items-center text-pink-700 hover:text-pink-900"
+          className="flex items-center text-pink-700 hover:text-pink-900"
         >
           <ArrowLeft className="mr-2" /> Voltar ao Cardápio
         </Link>
-        <h1 className="text-2xl sm:text-3xl font-bold text-center text-black">
-          Finalizar Pedido
-        </h1>
+        <Link 
+          href="/" 
+          className="flex items-center text-pink-700 hover:text-pink-900"
+        >
+          <Home className="mr-2" /> Início
+        </Link>
       </div>
+      
+      <h1 className="text-2xl sm:text-3xl font-bold text-center text-black mb-6">
+        Finalizar Pedido
+      </h1>
       
       <form 
         onSubmit={handleSubmit} 
@@ -137,7 +144,7 @@ function PedidosContent() {
                 <button
                   type="button"
                   onClick={() => removerBolo(index)}
-                  className="text-red-500 hover:text-red-700 w-full sm:w-auto"
+                  className="text-red-500 hover:text-red-700 w-full sm:w-auto text-sm"
                 >
                   Remover
                 </button>
@@ -152,33 +159,33 @@ function PedidosContent() {
         {/* Campos de formulário com espaçamento e responsividade */}
         <div className="space-y-4">
           <div>
-            <label className="block mb-2 text-black">Nome Completo</label>
+            <label className="block mb-2 text-black text-sm">Nome Completo</label>
             <input
               type="text"
               value={dadosCliente.nome}
               onChange={(e) => setDadosCliente({ ...dadosCliente, nome: e.target.value })}
-              className="w-full border rounded p-2 text-black bg-white focus:ring-2 focus:ring-pink-300"
+              className="w-full border rounded p-2 text-black bg-white focus:ring-2 focus:ring-pink-300 text-sm"
               required
               placeholder="Digite seu nome"
             />
           </div>
           <div>
-            <label className="block mb-2 text-black">Telefone</label>
+            <label className="block mb-2 text-black text-sm">Telefone</label>
             <input
               type="tel"
               value={dadosCliente.telefone}
               onChange={(e) => setDadosCliente({ ...dadosCliente, telefone: e.target.value })}
-              className="w-full border rounded p-2 text-black bg-white focus:ring-2 focus:ring-pink-300"
+              className="w-full border rounded p-2 text-black bg-white focus:ring-2 focus:ring-pink-300 text-sm"
               required
               placeholder="(00) 00000-0000"
             />
           </div>
           <div>
-            <label className="block mb-2 text-black">Método de Pagamento</label>
+            <label className="block mb-2 text-black text-sm">Método de Pagamento</label>
             <select
               value={metodoPagamento}
               onChange={(e) => setMetodoPagamento(e.target.value)}
-              className="w-full border rounded p-2 text-black bg-white focus:ring-2 focus:ring-pink-300"
+              className="w-full border rounded p-2 text-black bg-white focus:ring-2 focus:ring-pink-300 text-sm"
             >
               <option value="pix">PIX</option>
               <option value="dinheiro">Dinheiro</option>
@@ -186,11 +193,11 @@ function PedidosContent() {
             </select>
           </div>
           <div>
-            <label className="block mb-2 text-black">Observações</label>
+            <label className="block mb-2 text-black text-sm">Observações</label>
             <textarea
               value={dadosCliente.observacoes}
               onChange={(e) => setDadosCliente({ ...dadosCliente, observacoes: e.target.value })}
-              className="w-full border rounded p-2 text-black bg-white focus:ring-2 focus:ring-pink-300"
+              className="w-full border rounded p-2 text-black bg-white focus:ring-2 focus:ring-pink-300 text-sm"
               rows={4}
               placeholder="Alguma observação especial?"
             />
@@ -203,7 +210,7 @@ function PedidosContent() {
           disabled={carrinho.length === 0}
           className="mt-4 w-full bg-pink-500 text-white py-3 rounded hover:bg-pink-600 
                      disabled:opacity-50 flex items-center justify-center 
-                     active:scale-95 transition-transform"
+                     active:scale-95 transition-transform text-sm md:text-base"
         >
           <FaWhatsapp className="mr-2" /> Enviar Pedido pelo WhatsApp
         </button>

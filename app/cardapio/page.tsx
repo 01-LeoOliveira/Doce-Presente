@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import bolos from '../../data/bolos.json'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ShoppingCart } from 'lucide-react'
+import { ShoppingCart, Home } from 'lucide-react'
 
 interface BoloCarrinho {
   id: number
@@ -81,10 +81,19 @@ function CardapioContent() {
         </Link>
       )}
 
-      <div className="bg-white p-4 md:p-6 rounded-2xl shadow-lg">
+      <div className="relative flex flex-col items-center justify-center mb-4">
+        <Link 
+          href="/" 
+          className="self-start w-full max-w-xs flex items-center text-pink-700 hover:text-pink-900 mb-2"
+        >
+          <Home className="mr-2" /> Início
+        </Link>
         <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-8 text-center text-pink-600">
           Nossos Bolos de Pote
         </h1>
+      </div>
+
+      <div className="bg-white p-4 md:p-6 rounded-2xl shadow-lg">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {bolos.map((bolo) => (
             <div 
