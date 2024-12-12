@@ -18,7 +18,7 @@
     {
       "id": 3,
       "nome": "Cupulate",
-      "descricao": "Bolo de chocolate feito com cupulate, alternativa ao chocolate",
+      "descricao": "Bolo de pote cupuaçu com chocolate",
       "preco": 15.00,
       "tamanhos": ["400mll"],
       "imagem": "/img/bolos/chocolate.jpeg"
@@ -29,7 +29,7 @@
       "descricao": "Bolo de leite ninho com camadas generosas de Nutella",
       "preco": 15.00,
       "tamanhos": ["400ml"],
-      "imagem": "/img/bolos/chocolate.jpeg"
+      "imagem": "/img/bolos/ninhocomnutella.jpg"
     },
     {
       "id": 5,
@@ -37,7 +37,7 @@
       "descricao": "Bolo de chocolate com recheio de coco cremoso",
       "preco": 15.00,
       "tamanhos": ["400ml"],
-      "imagem": "/img/bolos/chocolate.jpeg"
+      "imagem": "/img/bolos/prestigio.jpg"
     },
     {
       "id": 6,
@@ -61,7 +61,7 @@
       "descricao": "Bolo de leite ninho com pedaços crocantes de Oreo",
       "preco": 15.00,
       "tamanhos": ["400ml"],
-      "imagem": "/img/bolos/chocolate.jpeg"
+      "imagem": "/img/bolos/oreo.jpg"
     },
     {
       "id": 9,

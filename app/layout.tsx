@@ -8,8 +8,17 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: 'Doce Presente',
-  description: 'Bolos de Pote Artesanais'
+  title: 'Doce presente',
+  description: 'Bolos de Pote Artesanais',
+  icons: {
+    icon: [
+      { url: '/img/Logo.png', sizes: '16x16', type: 'image/png' },
+      { url: '/img/Logo.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/img/Logo.png', sizes: '180x180', type: 'image/png' },
+    ],
+  }
 }
 
 export default function RootLayout({
