@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import bolos from '../../data/bolos.json'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ShoppingCart, Home } from 'lucide-react'
+import { ShoppingCart, Home, Plus, Minus } from 'lucide-react'
 
 interface BoloCarrinho {
   id: number
@@ -33,10 +33,31 @@ function CardapioContent() {
   const [bolosQuantidade, setBolosQuantidade] = useState<{[key: number]: {quantidade: number, tamanho: string}}>({})
 
   const atualizarQuantidade = (boloId: number, quantidade: number, tamanho: string) => {
+    const novaQuantidade = Math.max(1, quantidade) // Ensure quantity doesn't go below 1
     setBolosQuantidade(prev => ({
       ...prev,
-      [boloId]: { quantidade, tamanho }
+      [boloId]: { quantidade: novaQuantidade, tamanho }
     }))
+  }
+
+  const incrementarQuantidade = (boloId: number) => {
+    const atual = bolosQuantidade[boloId]?.quantidade || 1
+    atualizarQuantidade(
+      boloId,
+      atual + 1,
+      bolosQuantidade[boloId]?.tamanho || '400ml'
+    )
+  }
+
+  const decrementarQuantidade = (boloId: number) => {
+    const atual = bolosQuantidade[boloId]?.quantidade || 1
+    if (atual > 1) {
+      atualizarQuantidade(
+        boloId,
+        atual - 1,
+        bolosQuantidade[boloId]?.tamanho || '400ml'
+      )
+    }
   }
 
   const adicionarAoCarrinho = (bolo: typeof bolos[0]) => {
@@ -57,17 +78,19 @@ function CardapioContent() {
     if (indiceExistente > -1) {
       carrinhoAtualizado[indiceExistente].quantidade += boloNoCarrinho.quantidade
     } else {
-        carrinhoAtualizado.push(boloNoCarrinho)
+      carrinhoAtualizado.push(boloNoCarrinho)
     }
 
     setCarrinho(carrinhoAtualizado)
+    
+    // Reset quantity after adding to cart
+    atualizarQuantidade(bolo.id, 1, detalhes.tamanho)
   }
 
   const valorTotal = carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0)
 
   return (
     <div className="container mx-auto px-2 md:px-4 py-4 md:py-8 bg-[#ffcbdb] min-h-screen">
-      {/* Botão de Carrinho Flutuante */}
       {carrinho.length > 0 && (
         <Link 
           href={{
@@ -137,20 +160,23 @@ function CardapioContent() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-                  <input 
-                    type="number"
-                    min="1"
-                    value={bolosQuantidade[bolo.id]?.quantidade || 1}
-                    onChange={(e) => {
-                      const quantidade = parseInt(e.target.value)
-                      atualizarQuantidade(
-                        bolo.id, 
-                        quantidade, 
-                        bolosQuantidade[bolo.id]?.tamanho || '400ml'
-                      )
-                    }}
-                    className="w-full sm:w-16 border rounded px-2 py-1 text-center text-sm"
-                  />
+                  <div className="flex items-center border rounded">
+                    <button
+                      onClick={() => decrementarQuantidade(bolo.id)}
+                      className="px-2 py-1 text-pink-600 hover:bg-pink-100 rounded-l"
+                    >
+                      <Minus className="w-4 h-4" />
+                    </button>
+                    <span className="px-4 py-1 border-x text-center min-w-[40px]">
+                      {bolosQuantidade[bolo.id]?.quantidade || 1}
+                    </span>
+                    <button
+                      onClick={() => incrementarQuantidade(bolo.id)}
+                      className="px-2 py-1 text-pink-600 hover:bg-pink-100 rounded-r"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  </div>
                   <button 
                     onClick={() => adicionarAoCarrinho(bolo)}
                     className="w-full sm:flex-1 bg-pink-500 text-white py-2 rounded hover:bg-pink-600 text-sm"
